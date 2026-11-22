@@ -92,8 +92,13 @@
             100% { transform: translateX(-50%); }
         }
         @keyframes bounceArrow {
-            0%, 100% { transform: rotate(45deg) translate(0, 0); }
-            50% { transform: rotate(45deg) translate(-4px, -4px); }
+            0%, 100% { transform: translateY(0) rotate(45deg); }
+            50% { transform: translateY(-6px) rotate(45deg); }
+        }
+        /* Own entrance animation so the -50% centering transform is never overwritten. */
+        @keyframes hintIn {
+            0% { opacity: 0; transform: translateX(-50%) translateY(14px); }
+            100% { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
         @keyframes glitchClip {
             0% { clip-path: inset(0 0 0 0); }
@@ -354,14 +359,13 @@
             align-items: center;
             gap: 10px;
             padding: 6px 10px;
-            animation: slashIn 0.6s var(--ease) 1.6s both;
+            animation: hintIn 0.6s var(--ease) 1.6s backwards;
             transition: opacity 0.4s var(--ease);
         }
         .scroll-hint.hide { opacity: 0; pointer-events: none; }
         .scroll-hint span { font-family: var(--font-display); font-size: 11px; letter-spacing: 4px; color: rgba(255,255,255,0.4); }
         .scroll-hint .arrow {
             width: 16px; height: 16px;
-            margin-right: 2px;
             border-right: 3px solid var(--red-bright);
             border-bottom: 3px solid var(--red-bright);
             transform: rotate(45deg);
