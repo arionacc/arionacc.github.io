@@ -52,15 +52,15 @@
             text-rendering: optimizeLegibility;
         }
 
-        /* Film grain overlay for print/punk texture */
+        /* Film grain overlay for print/punk texture (kept faint so it never roughens diagonal edges) */
         body::after {
             content: '';
             position: fixed;
             inset: 0;
             pointer-events: none;
             z-index: 9999;
-            opacity: 0.04;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
 
         ::selection { background: var(--white); color: var(--black); }
@@ -109,6 +109,13 @@
         }
 
         /* ===== UTILITY ===== */
+        /* Promote diagonal/clipped elements to their own GPU layer so clip-path
+           edges are anti-aliased cleanly instead of rendering jagged. */
+        .slash-btn, .jagged-bottom, .hero::before, .hero-terminal::before,
+        .ticker, .projects-grid, .learning-grid, .contribute-stats {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
         .slash-btn { clip-path: var(--slash); }
         .jagged-bottom {
             clip-path: polygon(0 0, 100% 0, 100% 90%, 94% 100%, 86% 93%, 78% 100%, 70% 95%, 62% 100%, 54% 91%, 46% 100%, 38% 94%, 30% 100%, 22% 93%, 14% 100%, 6% 96%, 0 100%);
